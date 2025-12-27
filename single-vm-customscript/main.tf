@@ -93,8 +93,8 @@ resource "azurerm_linux_virtual_machine" "this" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-LTS"
     version   = "latest"
   }
 
@@ -105,6 +105,11 @@ resource "azurerm_linux_virtual_machine" "this" {
   }
 
   tags = var.tags
+
+identity {
+  type = "SystemAssigned"
+}
+
 }
 
 # Configurate to run automated tasks in the VM start-up
@@ -133,4 +138,11 @@ data "azurerm_public_ip" "this" {
 # Output variable: Public IP address
 output "public_ip" {
   value = data.azurerm_public_ip.this.ip_address
+}
+resource "azurerm_virtual_machine_extension" "aad_login" {
+  name                 = "AADSSHLoginForLinux"
+  virtual_machine_id   = azurerm_linux_virtual_machine.this.id
+  publisher            = "Microsoft.Azure.ActiveDirectory"
+  type                 = "AADSSHLoginForLinux"
+  type_handler_version = "1.0"
 }
