@@ -3,6 +3,7 @@
 This folder contains a "multi-linux-vm" example of a [Terraform](https://www.terraform.io/) file on Microsoft Azure.
 
 This Terraform file create a multiple Linux Virtual Machine server on Microsoft Azure by provisioning the necessary infrastructure, and using the shortest script.
+VMs are created using module structure
 
 ## Requirements
 
